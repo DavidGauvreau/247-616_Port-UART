@@ -61,12 +61,14 @@ void main(void)
 	
 	SerialPortSettings.c_iflag &= ~(IXON | IXOFF | IXANY);          // Disable XON/XOFF flow control both i/p and o/p
 
-	SerialPortSettings.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);  // Non Cannonical mode, Disable echo, Disable signal  
+	SerialPortSettings.c_lflag &= ~(ECHO | ECHOE | ISIG); //Disable echo, Disable signal  
 
 	SerialPortSettings.c_oflag &= ~OPOST;	// No Output Processing
 
+	SerialPortSettings.c_lflag |= ICANON; // enable canonical mode
+
 	// Setting Time outs 
-	SerialPortSettings.c_cc[VMIN] = 0; // Read at least X character(s) 
+	SerialPortSettings.c_cc[VMIN] = 1; // Read at least X character(s) 
 	SerialPortSettings.c_cc[VTIME] = 10; // Wait Xsec between each character (0 for indefinetly) 
 
 	if((tcsetattr(fd, TCSANOW, &SerialPortSettings)) != 0) // Set the attributes to the termios structure

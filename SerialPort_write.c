@@ -70,14 +70,22 @@ void main(void)
 		printf("\n  Erreur! configuration des attributs du port serie");
 
 	// Write data to serial port 
-	char write_buffer[] = "ABCDE12345";	// Buffer containing characters to write into port
+	char write_bufferPart1[] = "ABCDE";	// Buffer containing characters to write into port
+	char write_bufferPart2[] = "12345\n";	// Buffer containing characters to write into port
 	int  bytes_written  = 0;  	// Value for storing the number of bytes written to the port 
 
-	bytes_written = write(fd, write_buffer, sizeof(write_buffer)); // use write() to send data to port 
+	bytes_written = write(fd, write_bufferPart1, sizeof(write_bufferPart1)); // use write() to send data to port 
 										// "fd"                   - file descriptor pointing to the opened serial port
 										//	"write_buffer"         - address of the buffer containing data
 										// "sizeof(write_buffer)" - No of bytes to write 
-	printf("\n Ecriture de %d octets : %s ecrit sur le port %s", bytes_written, write_buffer, portTTY);
+	
+	printf("\n Ecriture de %d octets : %s ecrit sur le port %s", bytes_written, write_bufferPart1, portTTY);
+	printf("\n");
+	
+	sleep(2);//Dort 2 secondes pour voir que le programme read n'affiche pas directemnet la string après qu'elle soit envoyée.
+	bytes_written = write(fd, write_bufferPart2, sizeof(write_bufferPart2));
+
+	printf("\n Ecriture de %d octets : %s ecrit sur le port %s", bytes_written, write_bufferPart2, portTTY);
 	printf("\n");
 
 	close(fd); // Close the Serial port 
